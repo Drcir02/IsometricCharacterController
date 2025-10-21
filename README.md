@@ -21,14 +21,13 @@ https://user-images.githubusercontent.com/48212096/233183996-4866846e-c380-4c6d-
     - Coyote Jumping
     - Jump Buffering
     - Better Jump parabolic motion
-    - Long jumping
 
 ## Controls
 | Control | Keyboard | Gamepad |
 | :---    |  :---:   |   :---:  |
 | Move    | `WASD`     | `Left Stick` |
 | Jump    | `Space`    | `A (Xbox) / X (PlayStation)` |
-| Glide   | Press & Hold Jump while airborne | Press & Hold Jump while airborne
+| Glide   | Hold Jump button while airborne | Hold Jump button while airborne
 
 # Requirements
 - Unity 2021.3.23f1
