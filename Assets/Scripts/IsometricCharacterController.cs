@@ -77,6 +77,26 @@ public class IsometricCharacterController : MonoBehaviour
     private float coyoteTime;
     private float coyoteTimeCounter;
 
+    [Header("Animation")]
+    [SerializeField]
+    private Animator animator;
+
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float idleTransition = 0.1f;
+
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float runTransition = 0.1f;
+
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float jumpTransition = 0.1f;
+
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float glideTransition = 0.1f;
+
     [Header("Input Damping")]
     [SerializeField]
     [Range(0.0f, 1.0f)]
@@ -162,8 +182,50 @@ public class IsometricCharacterController : MonoBehaviour
         playerInputActions.Player.Disable();
     }
 
+    private void Animate()
+    {
+        if (isGrounded)
+        {
+            // if is moving (actual movement, not input or velocity)
+            if (new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude > 0.1f)
+            {
+                // Play run animation
+                if(animator.IsInTransition(0))  return;
+                animator.CrossFade("Run", runTransition);
+                Debug.Log("Running");
+            }
+            else
+            {
+                // Play idle animation
+                if (animator.IsInTransition(0)) return;
+                animator.CrossFade("Idle", idleTransition);
+                Debug.Log("Idle");
+            }
+
+        }
+        else
+        {
+            if (isGliding)
+            {
+                // Play gliding animation
+                if (animator.IsInTransition(0)) return;
+                animator.CrossFade("Glide", glideTransition);
+                Debug.Log("Gliding");
+            }
+            else if(isJumping)
+            {
+                // Play jump up animation
+                if (animator.IsInTransition(0)) return;
+                animator.CrossFade("Jump", jumpTransition);
+                Debug.Log("Jumping");
+            }
+        }
+    }
+
     void Update()
     {
+        Animate();
+
         // Check if grounded.
         isGrounded = controller.isGrounded;
         currentDampingRot = inputDampingRotation;
