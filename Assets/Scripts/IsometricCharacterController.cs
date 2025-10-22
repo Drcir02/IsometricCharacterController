@@ -192,14 +192,12 @@ public class IsometricCharacterController : MonoBehaviour
                 // Play run animation
                 if(animator.IsInTransition(0))  return;
                 animator.CrossFade("Run", runTransition);
-                Debug.Log("Running");
             }
             else
             {
                 // Play idle animation
                 if (animator.IsInTransition(0)) return;
                 animator.CrossFade("Idle", idleTransition);
-                Debug.Log("Idle");
             }
 
         }
@@ -210,14 +208,12 @@ public class IsometricCharacterController : MonoBehaviour
                 // Play gliding animation
                 if (animator.IsInTransition(0)) return;
                 animator.CrossFade("Glide", glideTransition);
-                Debug.Log("Gliding");
             }
             else if(isJumping)
             {
                 // Play jump up animation
                 if (animator.IsInTransition(0)) return;
                 animator.CrossFade("Jump", jumpTransition);
-                Debug.Log("Jumping");
             }
         }
     }
