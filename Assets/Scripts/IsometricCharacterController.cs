@@ -97,6 +97,15 @@ public class IsometricCharacterController : MonoBehaviour
     [Range(0.0f, 1.0f)]
     private float glideTransition = 0.1f;
 
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float positionSmoothTime = 0.1f;
+
+    // Velocity used by SmoothDamp for animator localPosition
+    private Vector3 animatorLocalPositionVelocity = Vector3.zero;
+    // Target local position for the animator root
+    private Vector3 animatorTargetLocalPosition = Vector3.zero;
+
     [Header("Input Damping")]
     [SerializeField]
     [Range(0.0f, 1.0f)]
@@ -192,14 +201,15 @@ public class IsometricCharacterController : MonoBehaviour
                 // Play run animation
                 if(animator.IsInTransition(0))  return;
                 animator.CrossFade("Run", runTransition);
+                animatorTargetLocalPosition = new Vector3(0.0f, 0f, 0.0f);
             }
             else
             {
                 // Play idle animation
-                if (animator.IsInTransition(0)) return;
+                //if (animator.IsInTransition(0)) return;
                 animator.CrossFade("Idle", idleTransition);
+                animatorTargetLocalPosition = new Vector3(0.0f, -0.534f, 0.0f);
             }
-
         }
         else
         {
@@ -208,13 +218,22 @@ public class IsometricCharacterController : MonoBehaviour
                 // Play gliding animation
                 if (animator.IsInTransition(0)) return;
                 animator.CrossFade("Glide", glideTransition);
+                animatorTargetLocalPosition = new Vector3(0.0f, 0f, 0.0f);
             }
             else if(isJumping)
             {
                 // Play jump up animation
                 if (animator.IsInTransition(0)) return;
                 animator.CrossFade("Jump", jumpTransition);
+                animatorTargetLocalPosition = new Vector3(0.0f, 0f, 0.0f);
             }
+        }
+
+        // Smoothly move the animator root localPosition toward the target
+        if (animator != null)
+        {
+            float smooth = Mathf.Max(positionSmoothTime, 0.0001f);
+            animator.transform.localPosition = Vector3.SmoothDamp(animator.transform.localPosition, animatorTargetLocalPosition, ref animatorLocalPositionVelocity, smooth);
         }
     }
 

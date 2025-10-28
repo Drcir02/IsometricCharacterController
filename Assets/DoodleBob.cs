@@ -5,10 +5,11 @@ using UnityEngine.Events;
 
 public class DoodleBob : MonoBehaviour
 {
+    public Transform player;
+    public GameObject mesh;
+
     [Header("Events")]
     public UnityEvent onHit;
-
-    public GameObject mesh;
 
     public void HitByBoomerang()
     {
@@ -33,5 +34,18 @@ public class DoodleBob : MonoBehaviour
             return;
         }
         gameObject.layer = layer;
+    }
+
+    public void JumpIntoPlayer()
+    {
+        // DisableController();
+        // Play anim (physics not animation)
+        GetComponent<Animator>().Play("Jump");
+    }
+
+    private void DisableController()
+    {
+        GetComponent<CharacterController>().enabled = false;
+        GetComponent<FollowPlayer>().enabled = false;
     }
 }
